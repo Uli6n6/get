@@ -6,11 +6,9 @@ GPIO.setup(led, GPIO.OUT)
 state=0
 period=5.0
 botton=13
-foto=6
 GPIO.setup(botton, GPIO.IN)
-GPIO.setup(foto, GPIO.IN)
 while True:
-    
-    state=not GPIO.input(foto)
-    GPIO.output(led,state)
-    time.sleep(0.2)
+    if GPIO.input(botton):
+        state=not state
+        GPIO.output(led,state)
+        time.sleep(period)
