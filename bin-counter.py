@@ -11,17 +11,14 @@ GPIO.setup(9,GPIO.IN)
 GPIO.setup(10,GPIO.IN)
 n=0
 while True:
-    GPIO.output(leds,dec2bin(n))
     if GPIO.input(9)>0:
-        GPIO.output(leds[n%8],0)
         n+=1
-        print(n,dec2bin(n))
-        GPIO.output(leds[n%8],1)
+        GPIO.output(leds,dec2bin(n%256))
         time.sleep(0.2)
     if GPIO.input(10)>0:
-        GPIO.output(leds[n%8],0)
+        
         n-=1
         print(n,dec2bin(n))
-        GPIO.output(leds[n%8],1)
+        GPIO.output(leds,dec2bin(n%256))
         time.sleep(0.2)
     
