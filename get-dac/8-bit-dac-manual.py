@@ -12,7 +12,7 @@ def number_to_dac(number,leds):
 
 
 GPIO.setmode(GPIO.BCM)
-dac_bits=[24,22,23,27,17,25,12,16]
+dac_bits=[16,20,21,25,26,17,27,22]
 dac_bits=dac_bits[::-1]
 for led in dac_bits:
     GPIO.setup(led,GPIO.OUT)
