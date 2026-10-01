@@ -1,4 +1,11 @@
 import numpy
 import time
-def get_sin_wave_amplitude(freq, time):
-    return 
+import math
+def get_sin_wave_amplitude(freq, t):
+    phase=2*math.pi*freq*t
+    raw_sin=math.sin(phase)
+    normalized_amplitude=(raw_sin+1)/2
+    return normalized_amplitude
+
+def wait_for_sampling_period(sampling_frequency):
+    time.sleep(1/sampling_frequency)

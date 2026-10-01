@@ -1,6 +1,6 @@
-import RPi.GPIO as GPIO
+import signal_generator as sg
 import time
-GPIO.setwarnings(False)
+import RPi.GPIO as GPIO
 class R2R_DAC:
     def __init__(self, gpio_bits, dynamic_range, verbose = False):
         self.gpio_bits = gpio_bits
@@ -22,21 +22,18 @@ class R2R_DAC:
             print("Устанавливаем 0.0 В")
             return 0
         return self.set_number(int(voltage / self.dynamic_range * 255))
-    
+amplitude =2
+signal_frequency = 10
+sampling_frequency = 6000
+start_time=time.time()
 GPIO.setmode(GPIO.BCM)
 dac_bits=[16,20,21,25,26,17,27,22]
-dac_bits=dac_bits[::-1]
-for led in dac_bits:
-    GPIO.setup(led,GPIO.OUT)
-    GPIO.output(led,0)
 
 try:
-    dac = R2R_DAC(dac_bits, 3.183,True)
+    dac=R2R_DAC(dac_bits, 3.0)
     while True:
-        try:
-            voltage = float(input("Введите напряжение:"))
-            dac.set_voltage(voltage)
-        except ValueError:
-            print("Вы ввели не число. Попробуй еще раз\n")
+        sg.wait_for_sampling_period(sampling_frequency)
+        dac.set_voltage(sg.get_sin_wave_amplitude(signal_frequency, time.time()-start_time)*amplitude)
+
 finally:
     dac.deinit()
