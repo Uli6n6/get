@@ -8,17 +8,17 @@ class PWM_DAC:
         self.gpio_bits = gpio_pin
         self.dynamic_range = dynamic_range
         self.verbose=verbose
-        GPIO.setup(self.gpio_bits,GPIO.OUT, initial = 0)
+        GPIO.setup(gpio_pin,GPIO.OUT, initial = 0)
         self.pwm_frequency=pwm_frequency
         self.pwm=GPIO.PWM(self.gpio_bits,self.pwm_frequency)
-        self.pwm.start(self.pwm_frequency)
+        self.pwm.start(0)
 
     def set_voltage(self, voltage):
         if not (0.0 <= voltage <= self.dynamic_range):
             print(f"Напряжение выходит за динамический диапазон ЦАП (0.0 - {self.dynamic_range:.2f} В)")
             print("Устанавливаем 0.0 В")
             return 0
-        self.pwm.ChangeDutyCycle(voltage / self.dynamic_range * 10)
+        self.pwm.ChangeDutyCycle(voltage / self.dynamic_range * 100)
 
 
     def deinit(self):
@@ -28,17 +28,16 @@ class PWM_DAC:
 
 
 
-amplitude =2
-signal_frequency = 10000
-sampling_frequency = 1000
+amplitude =3
+signal_frequency = 5
+sampling_frequency = 200
 start_time=time.time()
-GPIO.setmode(GPIO.BCM)
-
+dac=PWM_DAC(12,500, 3.1,True)
 try:
-    dac=PWM_DAC(16,100, 3.0,True)
     while True:
         sg.wait_for_sampling_period(sampling_frequency)
         dac.set_voltage(sg.get_sin_wave_amplitude(signal_frequency, time.time()-start_time)*amplitude)
+        
 
 finally:
     dac.deinit()
