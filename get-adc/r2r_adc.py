@@ -49,8 +49,8 @@ try:
     dac = R2R_ADC(3.1, compare_time = 0.001, verbose = False)
     while True:
         try:
-            #voltage = dac.get_sc_voltage()
-            #print(voltage,"B")
+            voltage = dac.get_sc_voltage()
+            print(voltage,"B")
             voltage = dac.get_sar_voltage()
             print(voltage,"B")
             time.sleep(0.1)
